@@ -10,7 +10,7 @@ import NavigationController from 'chanjet-ui/lib/navigation/NavigationController
 import theme from './styles/theme';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import {appRoutes} from './app-routes'
-import './assets/css/main.less';
+import './www/css/main.less';
 
 // touchTap 插件初始化
 injectTapEventPlugin();

@@ -9,9 +9,9 @@ export const routes = {
 }
 
 const routeMap = {
+    // require 为静态编译， 重复部分不能省略
     [routes.list]: (cb) => {require.ensure([], (require) => {cb(require('./components/pages/List/Page').default)})},
     [routes.home]: (cb) => {require.ensure([], (require) => {cb(require('./components/pages/Home/Page').default)})},
-
 
 }
 

@@ -1,7 +1,7 @@
 var ip = require("ip");
 var webpack = require('webpack');
 var WebpackDevServer = require('webpack-dev-server');
-var config = require('./webpack-dev-config');
+var config = require('./internals/webpack/webpack-dev-config');
 
 console.log('Starting server...\n');
 

@@ -56,7 +56,7 @@
     "ip": "^1.1.0"
   },
   "scripts": {
-    "start": "cross-env NODE_ENV=development node server.js --config ./webpack-dev-config.js --progress --colors --inline --hot",
-    "build": "cross-env NODE_ENV=development webpack --config ./webpack-dev-config.js --progress --colors"
+    "start": "node internals/scripts/build-lib.js && npm run dev",
+    "dev": "webpack-dev-server --config internals/webpack/webpack-dev-server.config.js --progress --colors --hot --inline"
   }
 }
