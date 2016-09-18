@@ -7,7 +7,7 @@ import mutants from 'chanjet-mutants';
 import {setConfig, config} from 'chanjet-ui/lib/config';
 import MuiThemeProvider from 'chanjet-ui/lib/components/styles/MuiThemeProvider';
 import NavigationController from 'chanjet-ui/lib/navigation/NavigationController';
-import theme from './styles/theme';
+import theme from './theme';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 import {appRoutes} from './app-routes'
 import './www/css/main.less';

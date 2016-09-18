@@ -7,18 +7,17 @@ const fs = require('fs');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+const CleanPlugin = require('clean-webpack-plugin');
 
 const basePath = process.cwd();
-const buildPath = path.join(basePath, 'static/dist');
-const nodeModulesPath = path.join(basePath,'node_modules');
+const buildPath = path.join(basePath, 'dist');
 
 module.exports = (function(){
 
     var cfg =  {
         entry: {
             app: [
-                'webpack/hot/dev-server',
-                'webpack/hot/only-dev-server',
                 'babel-es6-polyfill/browser-polyfill.min.js',
                 'babel-plugin-px2rem/browser-polyfill.js',
                 path.join(basePath,'src/app.js')
@@ -36,7 +35,6 @@ module.exports = (function(){
                 {
                     test: /\.js$/,
                     loaders: [
-                        'react-hot',
                         'babel-loader',
                     ],
                     exclude: /node_modules/,
@@ -49,23 +47,37 @@ module.exports = (function(){
                     test: /\.less$/,
                     loader: ExtractTextPlugin.extract('style-loader', 'css-loader?' + JSON.stringify({autoprefixer: {remove: false}}) + '!less-loader', {publicPath: ''})
                 },
+
                 {test: /\.(png|jpg)$/, loader: 'url-loader?limit=8192'}
             ],
         },
 
+        context: basePath,
         plugins: [
-            // Allows for sync with browser while developing (like BorwserSync)
-            new webpack.HotModuleReplacementPlugin(),
-            // Allows error warninggs but does not stop compiling. Will remove when eslint is added
-            new webpack.NoErrorsPlugin(),
-            new CopyWebpackPlugin([
-                {from: path.join(basePath, 'src/www/index.html')},
-            ]),
+            new CleanPlugin(['dist'],{root: basePath}),
+           new webpack.optimize.OccurenceOrderPlugin(),
+            new webpack.optimize.DedupePlugin(),
+            new webpack.optimize.UglifyJsPlugin({
+                compress: {
+                    warnings: false,
+                },
+                output  : {
+                    comments: false,
+                },
+            }),
             new ExtractTextPlugin('[name].css', {allChunks: true}),
             new webpack.DllReferencePlugin({
                 context: basePath,
-                manifest: require('./manifest.json'),
-            })
+                manifest: require(path.join(basePath,'manifest.json')),
+            }),
+            new CopyWebpackPlugin([
+                {from: path.join(basePath,'src/www/cordova'), to: 'cordova'},
+                {from: path.join(basePath,'src/www/css'), to: 'css'},
+                {from: path.join(basePath,'src/www/images'), to: 'images'},
+                {from: path.join(basePath,'src/www/libs'), to: 'libs'},
+                {from: path.join(basePath,'src/www/lib.js')},
+                {from: path.join(basePath,'src/www/index.html')},
+            ])
         ],
 
         postcss: function () {
@@ -85,25 +97,14 @@ module.exports = (function(){
                 require('postcss-reporter')({ // This plugin makes sure we get warnings in the console
                     clearMessages: true
                 }),
-               /* require('postcss-font-magician')({
-                    hosted : './src/css/iconfont'
-                }),*/
+                require('postcss-font-magician')({
+                    hosted : path.join(basePath,'src/www/css/iconfont')
+                }),
                 require('postcss-plugins-px2rem')({remUnit: 37.5,baseDpr:1})
             ];
         },
 
-        // Configuration for dev server
-        devServer: {
-            contentBase: path.join(basePath,'src/www'),
-            devtool: 'source-map',
-            hot: true,
-            inline: true,
-            port: 8080,
-            // Required for webpack-dev-server.
-            outputPath: buildPath,
-        },
-
-        devtool: 'eval',
+        warning: false
     };
 
     return cfg;
