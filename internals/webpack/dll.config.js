@@ -57,7 +57,6 @@ module.exports = {
       })
   ],
     module: {
-        // Allow loading of non-es
         loaders: [
             {
                 test   : /\.js$/,

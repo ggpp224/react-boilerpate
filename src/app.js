@@ -16,14 +16,13 @@ import './www/css/main.less';
 injectTapEventPlugin();
 
 /*
- *  mutants准备完成后，确认用户的登录状态后，启动正式的应用入口
+ *  mutants准备完成后，启动正式的应用入口
  */
 mutants.ready((error) => {
     if(error)return;
 
     // 初始化Page和导航栏的主题
     setConfig({
-        ...config,
         theme: {
             page: {
                 navbar: {
