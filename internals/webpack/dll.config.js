@@ -23,7 +23,6 @@ if(process.env.NODE_ENV === 'development'){
     vendors = vendors.concat([
         'babel-plugin-px2rem/browser-polyfill.js',
         'babel-es6-polyfill/browser-polyfill.min.js',
-        "chanjet-ui"
     ]);
 }
 
