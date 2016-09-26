@@ -100,6 +100,7 @@ module.exports = (function(){
             hot: true,
             inline: true,
             port: 8080,
+            host: '0.0.0.0',
             // Required for webpack-dev-server.
             outputPath: buildPath,
         },
