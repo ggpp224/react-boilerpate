@@ -6,6 +6,7 @@ import {autobind} from 'core-decorators';
 import Page from '../../BasePage';
 import List from 'chanjet-ui/lib/List';
 import ListItem from 'chanjet-ui/lib/ListItem';
+import Alert from 'chanjet-ui/lib/Alert';
 
 
 class ListPage extends Page{
@@ -35,7 +36,7 @@ class ListPage extends Page{
 
     @autobind
     onMenuItemClick(){
-        alert('click');
+        Alert.show({msg:'click'});
     }
 
 }

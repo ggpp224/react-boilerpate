@@ -4,7 +4,7 @@ var WebpackDevServer = require('webpack-dev-server');
 
 console.log('Starting server...\n');
 
-new WebpackDevServer(webpack({}), { // Start a server
+new WebpackDevServer(webpack({output: {path:'/'}}), { // Start a server
     publicPath: 'dist',
     filename: "app.js",
     contentBase: 'dist',
