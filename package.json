@@ -58,14 +58,16 @@
     "copy-webpack-plugin": "^2.1.3",
     "extract-text-webpack-plugin": "^0.9.1",
     "clean-webpack-plugin": "^0.1.10",
-    "ip": "^1.1.0"
+    "ip": "^1.1.0",
+    "archiver": "^1.1.0",
+    "fs-extra": "^0.30.0"
   },
   "scripts": {
     "start": "node ./internals/scripts/build-lib.js && npm run dev",
     "dev": "webpack-dev-server --config internals/webpack/webpack-dev-server.config.js --progress --colors --hot --inline",
     "prod-build": "NODE_ENV=production webpack --config internals/webpack/dll.config.js --progress --colors --profile && NODE_ENV=production webpack --config internals/webpack/webpack-prod.config.js --progress --colors",
     "prod-server": "node internals/scripts/server.js",
-    "dll-pack": "NODE_ENV=development webpack --config internals/webpack/dll.config.js --progress --colors --profile"
-
+    "dll-pack": "NODE_ENV=development webpack --config internals/webpack/dll.config.js --progress --colors --profile",
+    "zip": "node internals/scripts/zip.js"
   }
 }
