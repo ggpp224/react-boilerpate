@@ -30,6 +30,11 @@ function zipFinish() {
     }
 }
 
+//删除已存在的zip包
+fs.removeSync('dist/android.zip');
+fs.removeSync('dist/ios.zip');
+
+// 将html从dist中移出
 move(
     [
         'dist/index.html',
@@ -40,31 +45,37 @@ move(
 );
 
 // zip 因archiver作用域问题不能提取公共函数
-fs.copySync('dist','ios');
-fs.copySync('dist','android');
+fs.copySync('dist','_tmp/ios');
+fs.copySync('dist','_tmp/android');
+
+// 将iso.html移入_tmp/ios文件夹内
+fs.copySync('_tmp/ios.html', '_tmp/ios/index.html');
+// 将android.html移入_tmp/ios文件夹内
+fs.copySync('_tmp/android.html', '_tmp/ios/index.html');
+
+// zip ios包
 var archive = archiver('zip');
 archive.on('finish',function () {
-    fs.removeSync('ios');
     zipProcess++;
     zipFinish();
 })
-archive.pipe(fs.createWriteStream('ios.zip'));
+archive.pipe(fs.createWriteStream('dist/ios.zip'));
 archive.bulk([
-    { src: ['ios/**']}
+    { expand: true, cwd:'_tmp',src: ['ios/**']}
 ]);
 archive.finalize();
 
-var archiveAndroid = archiver('zip');
-archiveAndroid.on('finish',function () {
-    fs.removeSync('android');
+// zip android包
+var androidArchive = archiver('zip');
+androidArchive.on('finish',function () {
     zipProcess++;
     zipFinish();
 })
-archiveAndroid.pipe(fs.createWriteStream('android.zip'));
-archiveAndroid.bulk([
-    { src: ['android/**']}
+androidArchive.pipe(fs.createWriteStream('dist/android.zip'));
+androidArchive.bulk([
+    { expand: true, cwd:'_tmp',src: ['android/**']}
 ]);
-archiveAndroid.finalize();
+androidArchive.finalize();
 
 //fs.removeSync('ios');
 //fs.removeSync('android');
