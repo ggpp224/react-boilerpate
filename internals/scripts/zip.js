@@ -8,6 +8,11 @@ var archiver = require('archiver');
 
 var zipProcess = 0;
 
+/**
+ * 移动文件
+ * @param files 文件路径集合
+ * @param directory 要移入的目录
+ */
 function move(files, directory) {
     files.forEach(function (file) {
         var fileName = file.split('/').pop();
@@ -77,7 +82,5 @@ androidArchive.bulk([
 ]);
 androidArchive.finalize();
 
-//fs.removeSync('ios');
-//fs.removeSync('android');
 
 
