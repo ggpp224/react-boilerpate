@@ -68,6 +68,6 @@
     "prod-build": "NODE_ENV=production webpack --config internals/webpack/dll.config.js --progress --colors --profile && NODE_ENV=production webpack --config internals/webpack/webpack-prod.config.js --progress --colors",
     "prod-server": "node internals/scripts/server.js",
     "dll-pack": "NODE_ENV=development webpack --config internals/webpack/dll.config.js --progress --colors --profile",
-    "zip": "node internals/scripts/zip.js"
+    "zip": "npm run prod-build && node internals/scripts/zip.js"
   }
 }

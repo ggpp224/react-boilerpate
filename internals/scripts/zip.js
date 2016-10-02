@@ -2,10 +2,11 @@
  * Created by guopeng on 16/9/27.
  */
 
-var fs = require("fs-extra");
+const fs = require("fs-extra");
 const path = require('path');
-var archiver = require('archiver');
+const archiver = require('archiver');
 
+const buildPath = 'dist';
 var zipProcess = 0;
 
 /**
@@ -29,42 +30,46 @@ function zipFinish() {
                 '_tmp/ios.html',
                 '_tmp/android.html'
             ],
-            'dist'
+            buildPath
         );
         fs.removeSync('_tmp');
     }
 }
 
 //删除已存在的zip包
-fs.removeSync('dist/android.zip');
-fs.removeSync('dist/ios.zip');
+fs.removeSync(path.join(buildPath,'android.zip'));
+fs.removeSync(path.join(buildPath,'ios.zip'));
 
 // 将html从dist中移出
 move(
     [
-        'dist/index.html',
-        'dist/ios.html',
-        'dist/android.html'
+        path.join(buildPath,'index.html'),
+        path.join(buildPath,'ios.html'),
+        path.join(buildPath,'android.html')
     ],
     '_tmp'
 );
 
-// zip 因archiver作用域问题不能提取公共函数
-fs.copySync('dist','_tmp/ios');
-fs.copySync('dist','_tmp/android');
+// copy dist到临时目录
+fs.copySync(buildPath,'_tmp/ios');
+fs.copySync(buildPath,'_tmp/android');
+// 移除非自己手机系统环境的cordova
+fs.removeSync('_tmp/ios/cordova/android');
+fs.removeSync('_tmp/android/cordova/ios');
 
 // 将iso.html移入_tmp/ios文件夹内
 fs.copySync('_tmp/ios.html', '_tmp/ios/index.html');
 // 将android.html移入_tmp/ios文件夹内
-fs.copySync('_tmp/android.html', '_tmp/ios/index.html');
+fs.copySync('_tmp/android.html', '_tmp/android/index.html');
 
 // zip ios包
+// zip 因archiver作用域问题不能提取公共函数
 var archive = archiver('zip');
 archive.on('finish',function () {
     zipProcess++;
     zipFinish();
 })
-archive.pipe(fs.createWriteStream('dist/ios.zip'));
+archive.pipe(fs.createWriteStream(path.join(buildPath,'ios.zip')));
 archive.bulk([
     { expand: true, cwd:'_tmp',src: ['ios/**']}
 ]);
@@ -76,7 +81,7 @@ androidArchive.on('finish',function () {
     zipProcess++;
     zipFinish();
 })
-androidArchive.pipe(fs.createWriteStream('dist/android.zip'));
+androidArchive.pipe(fs.createWriteStream(path.join(buildPath,'android.zip')));
 androidArchive.bulk([
     { expand: true, cwd:'_tmp',src: ['android/**']}
 ]);
