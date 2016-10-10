@@ -7,6 +7,7 @@ const path = require('path');
 const archiver = require('archiver');
 
 const buildPath = 'dist';
+const gzqAppZipPath = 'gzq-app-zip';
 var zipProcess = 0;
 
 /**
@@ -37,8 +38,9 @@ function zipFinish() {
 }
 
 //删除已存在的zip包
-fs.removeSync(path.join(buildPath,'android.zip'));
-fs.removeSync(path.join(buildPath,'ios.zip'));
+fs.removeSync(gzqAppZipPath);
+fs.mkdirsSync(gzqAppZipPath);
+
 
 // 将html从dist中移出
 move(
@@ -69,7 +71,7 @@ archive.on('finish',function () {
     zipProcess++;
     zipFinish();
 })
-archive.pipe(fs.createWriteStream(path.join(buildPath,'ios.zip')));
+archive.pipe(fs.createWriteStream(path.join(gzqAppZipPath,'ios.zip')));
 archive.bulk([
     { expand: true, cwd:'_tmp',src: ['ios/**']}
 ]);
@@ -81,7 +83,7 @@ androidArchive.on('finish',function () {
     zipProcess++;
     zipFinish();
 })
-androidArchive.pipe(fs.createWriteStream(path.join(buildPath,'android.zip')));
+androidArchive.pipe(fs.createWriteStream(path.join(gzqAppZipPath,'android.zip')));
 androidArchive.bulk([
     { expand: true, cwd:'_tmp',src: ['android/**']}
 ]);
