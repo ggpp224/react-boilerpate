@@ -80,9 +80,13 @@ function progress(options) {
 }
 
 try{
-    const stats = fs.statSync(path.join(buildPath, 'lib.js'));
-    // 超过两天重新编译lib.js
-    if(new Date().getTime() - new Date(stats.birthtime).getTime() > reBuildTime){
+    const libStats = fs.statSync(path.join(buildPath, 'lib.js'));
+    const packageJsonStats = fs.statSync(path.join(process.cwd(), 'package.json'));
+    const dllConfigStats = fs.statSync(path.join(process.cwd(), 'internals/webpack/dll.config.js'));
+    const libTime = new Date(libStats.ctime).getTime()
+
+  // lib.js 更新时间比 package.json 或 dll.config.js 的更新时间早时重新build
+  if( libTime < new Date(packageJsonStats.ctime).getTime() || libTime < new Date(dllConfigStats.ctime).getTime()){
         build();
     }
 }catch (error){
