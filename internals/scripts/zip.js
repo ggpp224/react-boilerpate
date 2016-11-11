@@ -73,7 +73,7 @@ archive.on('finish',function () {
 })
 archive.pipe(fs.createWriteStream(path.join(gzqAppZipPath,'ios.zip')));
 archive.bulk([
-    { expand: true, cwd:'_tmp',src: ['ios/**']}
+    { expand: true, cwd:'_tmp/ios/',src: ['**']}
 ]);
 archive.finalize();
 
@@ -85,7 +85,7 @@ androidArchive.on('finish',function () {
 })
 androidArchive.pipe(fs.createWriteStream(path.join(gzqAppZipPath,'android.zip')));
 androidArchive.bulk([
-    { expand: true, cwd:'_tmp',src: ['android/**']}
+    { expand: true, cwd:'_tmp/android/',src: ['**']}
 ]);
 androidArchive.finalize();
 
