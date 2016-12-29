@@ -14,3 +14,11 @@
 * cordova
 
 了解这些技术将有利于你的开发
+
+#### 命令
+* `npm start`   启动项目
+* `npm run zip` 打包成嵌入工作圈项目
+* `npm test` 执行单元测试
+* `npm run test-coverage` 生成覆盖率报告
+
+
