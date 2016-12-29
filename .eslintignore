@@ -1,0 +1,5 @@
+./test
+./cordova
+./plugins
+./node_modules
+./webpack

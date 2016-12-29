@@ -60,7 +60,15 @@
     "clean-webpack-plugin": "^0.1.10",
     "ip": "^1.1.0",
     "archiver": "^1.1.0",
-    "fs-extra": "^0.30.0"
+    "fs-extra": "^0.30.0",
+    "mocha": "^2.5.3",
+    "localStorage": "^1.0.3",
+    "jsdom": "^9.4.1",
+    "xmlhttprequest": "^1.8.0",
+    "history": "^1.17.0",
+    "expect": "^1.8.0",
+    "enzyme": "^2.2.0"
+
   },
   "scripts": {
     "start": "node ./internals/scripts/build-lib.js && npm run dev",
