@@ -9,5 +9,13 @@
     "transform-decorators-legacy",
     "transform-class-properties",
     "px2rem"
-  ]
+  ],
+  "env": {
+    "test": {
+      "plugins": [
+        ["transform-remove-console"],
+        [ "babel-plugin-webpack-alias", { "config": "./internals/webpack/webpack-test-config.js" } ]
+      ]
+    }
+  }
 }

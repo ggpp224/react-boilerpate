@@ -2,10 +2,10 @@
   "name": "boilerplate",
   "version": "0.0.1",
   "dependencies": {
-    "react": "15.2.0",
-    "react-dom": "15.2.0",
+    "react": "^15.2.0",
+    "react-dom": "^15.2.0",
     "core-decorators": "^0.12.0",
-    "react-tap-event-plugin": "^1.0.0",
+    "react-tap-event-plugin": "^2.0.0",
     "babel-es6-polyfill": "^1.0.1",
     "chanjet-mutants": "^1.0.0",
     "chanjet-navigator":"^2.0.1",
@@ -67,8 +67,10 @@
     "xmlhttprequest": "^1.8.0",
     "history": "^1.17.0",
     "expect": "^1.8.0",
-    "enzyme": "^2.2.0"
-
+    "react-addons-test-utils": "^15.2.1",
+    "enzyme": "^2.2.0",
+    "ignore-styles": "^4.0.0",
+    "babel-istanbul": "^0.12.1"
   },
   "scripts": {
     "start": "node ./internals/scripts/build-lib.js && npm run dev",
@@ -76,6 +78,8 @@
     "prod-build": "NODE_ENV=production webpack --config internals/webpack/dll.config.js --progress --colors --profile && NODE_ENV=production webpack --config internals/webpack/webpack-prod.config.js --progress --colors",
     "prod-server": "node internals/scripts/server.js",
     "dll-pack": "NODE_ENV=development webpack --config internals/webpack/dll.config.js --progress --colors --profile",
-    "zip": "npm run prod-build && node internals/scripts/zip.js"
+    "zip": "npm run prod-build && node internals/scripts/zip.js",
+    "test": "NODE_ENV=test mocha --compilers js:babel-core/register test/'**/*.js' --require ./test/setup.js --require babel-polyfill  --require ignore-styles",
+    "test-coverage": "NODE_ENV=test babel-node ./node_modules/.bin/babel-istanbul cover --report text --report html --report lcov ./node_modules/mocha/bin/_mocha -- --reporter dot  --recursive --require ./test/setup.js  --require ignore-styles"
   }
 }
